@@ -1,0 +1,390 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>OraSRP README</title>
+<style type="text/css">
+body {
+  font-family: Tahoma, Arial;
+  font-size: smaller;
+  color: #333; background: #fff;
+  text-align: left;
+  margin: 4px 20px 4px 20px; padding: 4px; border: 4px;
+}
+a:link {color: #a30}
+a:visited {color: #a30}
+.sectionTitleTop {color: #369; font-size: 140%; font-weight: bold; margin: 10px 0px 4px 0px}
+.sectionTitle {color: #369; font-size: 140%; font-weight: bold; margin: 30px 0px 4px 0px}
+.elementTitle {color: #369; font-size: 110%; font-weight: bold; margin: 30px 0px 4px 0px}
+.alert {color: #f00;}
+.ordinarytext {font-size: 100%; margin: 1em 10em 1em 0em; text-align: justify }
+.copyright { 
+  font-size: 80%; text-align: center; color: #444; margin: 0px 4px 0px 4px; padding: 6px 4px 0px 4px; 
+  border-top: dotted 1px #444;
+}
+.stmt {
+  background: #cc9; font-weight: bold; margin: 20px 0px 0px 0px; padding: 4px; order: 1px solid #cca; width: 99%
+  border-left: 1px solid #eeb; border-top: 1px solid #eeb; border-right: 1px solid #555; border-bottom: 1px solid #555; 
+}
+pre { border: 0px; margin: 0px; padding: 0px; font-size: 100% }
+h1,h2,h3,h4 {color: #369}
+table { border-collapse: collapse; margin: 10px 0px 10px 0px}
+.tp th { 
+  text-align: center; background: #cc9; color: #369;
+  border-left: 1px solid #eeb; border-top: 1px solid #eeb; border-right: 1px solid #555; border-bottom: 1px solid #555; 
+  padding: 2px; 
+}
+.tp td { 
+  font-family: Courier New, Courier, monospaced;
+  border: 1px solid #cca; padding: 2px; text-align: right; background: #f7f7e7
+}
+.fselect td{border: 0px; padding: 0px; font-family: Tahoma, Arial; text-align: left}
+.flistsubmit td{padding: 4px 0px 4px 0px; margin: 0px}
+.flist td{border:0px; padding: 0px; border-bottom:1px solid #bbb; font-family: Tahoma, Arial; text-align: left}
+.histplace { padding: 1em; border: 1px solid #cca; width: 60%; background: #f7f7e7 }
+.histtext {
+  font-family: courier; white-space: pre; float: left; padding: 0px 4px 0px 4px; margin: 0px; 
+  text-align: right
+}
+.histbar {
+  border-style: solid; border-width: 1px; border-color: #eee #777 #777 #aaa;
+  padding: 0px; margin: 0px; display: block; font-size: 80%; 
+  background: #aaa; float: left; text-align: right;
+}
+.histbarempty {
+  border-style: solid; border-width: 1px; border-color: #fff #ddd #ddd #fff; 
+  padding: 0px; margin: 0px; display: block; font-size: 80%; 
+  background: #eee; float: left; text-align: right;
+}
+.histbaravr {
+  border-style: solid; border-width: 1px; border-color: #cfc #0c0 #0c0 #cfc; 
+  padding: 0px; margin: 0px; display: block; font-size: 80%; 
+  background: #0f0; float: left; text-align: right;
+}
+.histvalue {
+  font-size: 50%; padding: 0px 4px 0px 4px; margin: 2px; 
+  ext-align: left; loat:right; 
+}
+.leftbox { text-align: left; float: left; }
+.rightbox { text-align: right; float: right; }
+#pleasewait {visibility: visible; text-align: center; font-size: 100%; font-weight: bold;}
+</style>
+</head>
+
+<body>
+<div class=sectionTitleTop><center>Oracle Session Resource Profiler</center></div>
+<div class=sectionTitle>Contents</div>
+
+<ul>
+<li><a href="#intro">Introduction</a>
+<li><a href="#install">Installation</a>
+<li><a href="#usage">Usage</a>
+<li><a href="#clo">Command-line options</a>
+<!--
+<li><a href="#repsections">Report Sections</a>
+<ul>
+<li><a href="#fp">session flat profile</a>
+<li><a href="#top5">top 5 statements</a>
+<li><a href="#cg">session call graph</a>
+<li><a href="#histograms">events histograms</a>
+<li><a href="#statements">statements</a>
+</ul>
+-->
+<li><a href="#proxysrp">proxysrp.pl utility</a>
+<li><a href="#examples">Examples</a>
+<li><a href="#diffs">Differences from OraSRP v2.1 and below</a>
+<li><a href="#contacts">Contacts</a>
+</ul>
+
+<a name=intro><div class=sectionTitle>Introduction</div></a>
+<div class=ordinarytext>
+In short, OraSRP is a profiler. It parses extended SQL trace files and creates 
+report which allows you to learn where your session spent its time and why.<br>
+OraSRP can read data from stding, regular file or directly from remote machine via TCP socket.<br>
+It may generate reports either in html or in text format.
+</div>
+
+<a name=install><div class=sectionTitle>Installation</div></a>
+<div class=ordinarytext>
+OraSRP comes in several forms:
+<ul>
+<li>Installer for Windows (orasrp-setup.exe). Just run it and follow usual instructions.
+<li>Binary for Windows (orasrp-windows.zip). Just unzip anywhere you want.
+<li>Binary for Linux (orasrp-linux.zip). Just unzip anywhere you want.
+<li>Binary for Mac OS X (orasrp-macosx.zip). Just unzip anywhere you want.
+</ul>
+</div>
+
+<a name=usage><div class=sectionTitle>Usage</div></a>
+<div class=ordinarytext>
+OraSRP is a command-line utility (like tkprof, for example). Pass trace file name as a first parameter 
+and output report name as a second. Like this:<pre>$ orasrp trace.trc report.html</pre>
+That's it. More detailed explanation of various command-line options is in the next paragraph.
+</div>
+
+<a name=clo><div class=sectionTitle>Command-line options</div></a>
+<div class=ordinarytext>
+Brief explanation:
+<pre>
+
+$ orasrp -h
+usage:  orasrp [options] trcfile [outfile]
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  -t, --text            output in text format
+  --aggregate=YES/no    aggregate similar statements
+  -bn, --binds=n        how many unique bind-sets to display (1 by defaut)
+  --maxbinds=n          how many unique bind-sets to analyze (all by default)
+  -c, --config          specify config file
+  --recognize-idle-events=YES/no
+                        recognize or not idle wait events 
+  --sys=YES/no          print sys statements
+  --sort                how to sort statements in output (values like in tkprof)
+  -s, --server          run in httpd mode
+  -p, --port            listen on alternate port (in httpd mode)
+  -r, --remote          connect to remote machine:port
+  --display-sections    what sections of report to display (all by default)
+  --skip-sections       what sections of report to skip
+  --sessionid           analyze data only for the specified session id
+  --threshold           omit statements which spend less than threshold % from total time (not used by defaut)
+  --google-charts       display charts using Google Chart API
+
+
+</pre>
+Note that you can use reduced form of options. I.e. instead of '--display-sections' you can use '--display' or just '--d'.
+<br><br>
+More detailed explanation:
+<ul>
+
+<li>On <code>trcfile</code>, <code>outfile</code> naming convention:<br>
+If <code>trcfile</code> is specified as <code>-</code> then OraSRP will read data from <code>stdin</code>. If <code>outfile</code> is not specified then OraSRP will
+print results to <code>stdout</code>. For example:<br>
+<pre>
+
+$ gzip -cd trace.trc.gz | orasrp - &gt; report.html
+
+</pre>
+<li>--aggregate (default: yes)<br>
+When OraSRP meet similar statements it aggregates statistics of such statements into one. 
+For example the following two statements are similar for OraSRP 
+(i.e. they differ from each other only by literal values):
+<pre>
+
+select * from table1 where field1 = 'foo';
+select * from table1 where field1 = 'bar';
+
+</pre>
+Set '--aggregate=no' and OraSRP will treat such statements separately.<br><br>
+
+<li>--binds (default: 1)<br>
+Although OraSRP analyzes every bind-set it displays only one 
+(the one for which statement spent most of its elapsed time).<br><br>
+Note that if you specify '--binds=0' or just '-b0' OraSRP
+will not analyze any bind-sets at all (which results to speed-up in trace file processing).<br><br>
+
+<li>--maxbinds (default: all)<br>
+By default OraSRP analyzes every bind-set for every statement in trace file. 
+For big files (f.e. above 1Gb) with a lot of binds it may be a very memory consuming operation. 
+In that case you can specify exactly how many unique bind-sets per statement to analyze.<br><br>
+
+<li>--config /path/to/alternate.conf<br>
+Starting from OraSRP version 4 you can specify options not only on command-line but in config-file too.
+Default config file is .orasrp.conf at the same directory where OraSRP resides. If you want to use alternate
+config file you can specify it with --config flag.<br><br>
+
+<li>--recognize-idle-events (default: yes)<br>
+There are some wait events called 'idle wait events' (or in terms of 10g and above, events from class 'Idle events').
+It's such events like 'SQL*Net message from client' or 'SQL*Net message from dblink'. But in terms of OraSRP
+they are not always 'idle'. They are 'idle' when they happens 'between-call'. For example, the following 
+'SQL*Net message from client' is considered 'idle':
+<pre>
+
+FETCH #1:c=1000,e=1000,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=4,tim=1096584406938289
+WAIT #1: nam='SQL*Net message to client' ela= 60 p1=1952673792 p2=1 p3=0
+<b><i>WAIT #1: nam='SQL*Net message from client' ela= 300 p1=1952673792 p2=1 p3=0</i></b>
+====
+PARSING IN CURSOR #1 len=16 dep=0 uid=1 oct=3 lid=0 tim=1096584406938294 hv=2000000 ad='5ff9ad80'
+
+</pre>
+
+and the following ('within-call') is not:
+<pre>
+
+FETCH #1:c=1000,e=1000,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=4,tim=1096584406938289
+WAIT #1: nam='SQL*Net message to client' ela= 60 p1=1952673792 p2=1 p3=0
+<b><i>WAIT #1: nam='SQL*Net message from client' ela= 300 p1=1952673792 p2=1 p3=0</i></b>
+FETCH #1:c=1000,e=1000,p=0,cr=0,cu=0,mis=0,r=0,dep=0,og=4,tim=1096584406940289
+
+</pre>
+
+By specifying '--recognize-idle-events=no' you tell OraSRP not to distinguish such cases.
+<br><br>
+
+<li>--sys (default: yes)<br>
+Like in tkprof, this option specifies whether or not to display internal statements (statements with userid=sys).
+<br><br>
+
+<li>--sort (default: totela)<br>
+How to sort statements in report. Values are similar to tkprof's ones. One difference is that you cannot
+simultaneously specify several values (yet?).<br>
+<ul>
+<li>prscnt -- number of times parse was called
+<li>prscpu -- cpu time parsing
+<li>prsela -- elapsed time parsed
+<li>prsdsk -- number of disk reads during parse
+<li>prsqry -- number of buffers for consistent read during parse
+<li>prscur -- number of buffers for current read during parse
+<li>prslio -- number of logical reads (consistent reads + current reads) during parse
+<li>prsmis -- number of misses in library cache during parse
+<li>execnt -- number of execute was called
+<li>execpu -- cpu time spent executing
+<li>exeela -- elapsed time executing
+<li>exedsk -- number of disk reads during execute
+<li>exeqry -- number of buffers for consistent read during execute
+<li>execur -- number of buffers for current read during execute
+<li>exerow -- number of rows processed during execute
+<li>exelio -- number of logical reads (consistent reads + current reads) during execute
+<li>exemis -- number of library cache misses during execute
+<li>fchcnt -- number of times fetch was called
+<li>fchcpu -- cpu time spent fetching
+<li>fchela -- elapsed time fetching
+<li>fchdsk -- number of disk reads during fetch
+<li>fchqry -- number of buffers for consistent read during fetch
+<li>fchcur -- number of buffers for current read during fetch
+<li>fchrow -- number of rows processed during fetch
+<li>fchlio -- number of logical reads (consistent reads + current reads) during fetch
+<li>totcnt -- number of times parse+exec+fetch were called
+<li>totcpu -- total cpu time spent
+<li>totela -- total elapsed time spent (default)
+<li>totdsk -- total number of disk reads
+<li>totqry -- total number of buffers for consistent read
+<li>totcur -- total number of buffers for current read
+<li>totrow -- total number of rows processed
+<li>totlio -- total number of logical reads (consistent reads + current reads)
+<li>totmis -- total number of library cache misses
+<li>crsid  -- display statements as they arrear in trace file
+</ul><br><br>
+
+<li>--server<br>
+It means that OraSRP will run in httpd mode listening on default port 2502 
+(can be changed by specifying --port <port-number>). It's kind of interactive mode -- 
+in your browser you select which trace (from all traces in current dir) to analyze.
+<br><br>
+
+<li>--remote<br>
+OraSRP can read data via socket from remote machine (proxysrp.pl script should be launched on remote machine).
+<br><br>
+
+<li>--display-sections (default: all)<br>
+OraSRP's report is divided into several sections. These sections are: 'Summary', 'Flat Profile', 
+'Top 5 Statements per Event', 'Call Graph', 'Events Histograms' and 'Statements'. Corresponding 
+values for '--display-section' are: summary, flatprofile, top5, callgraph, histograms and statements. 
+So, if you want to see just a call graph, run OraSRP with
+'--display-sections=callgraph' option. Note that you can specify several sections separated by comma.<br><br>
+
+<li>--skip-sections (not used by default)<br>
+You can use this option when you want to skip just one section from report (say, histograms). I.e. instead of
+specifying '--display-sections=summary,flatprofile,top5,callgraph,statements' you can specify just 
+'--skip-sections=histograms'.<br><br>
+
+<li>--sessionid (not used by default)<br>
+One trace file can contain data from several sessions. Unlike tkprof, OraSRP by default analyzes data only from
+the first encountered session.
+<br>When '--sessionid=all' is specified then OraSRP analyzes data from all 
+sessions in trace file. Pay attention that in that case OraSRP sum up 'session time' and various statistics
+from all sessions. So if you have trace file with two unrelated sessions then report would be meaningless. 
+On the other side, if you have, for example, trace file combined from parallel execution slaves then 
+'--sessionid=all' would be helpful.
+<br>You can also specify exactly from what session to analyze data. SessionID is just a 
+'sid.seriail#' (as they displayed in trace file).<br><br>
+
+<li>--threshold (not used by default)<br>
+Trace file may contain several hundreds statements each of them with a tiny impact to total session time. 
+Sometimes it's just annoying to see all of these unimportant statements in report. By using '--threshold' 
+option you tell OraSRP to omit statements not reached the threshold.<br><br>
+
+
+</ul>
+</div>
+
+<a name=proxysrp><div class=sectionTitle>proxysrp.pl utility</div></a>
+<div class=ordinarytext>
+OraSRP exists only on Windows/Linux/MacOSX. What if you want to analyze trace files on Solaris (or HP-UX, or AIX)?
+Previously you had to download tracefile to the machine with OraSRP and then analyze it there.
+<br>Starting from OraSRP version 4, you can use another method. Launch small perl script called proxysrp.pl on your Solaris box
+and leave it running. After that execute OraSRP with --remote flag and specify path to trace file as it's on a remote machine.
+<br>For example: let's say we have /path/on/solaris/to/trace.trc on solarisbox and orasrp on linuxbox. Run on solaris:
+<pre>
+
+solarisbox$ perl proxysrp.pl
+
+</pre>
+and on linux:
+<pre>
+
+linuxbox$ orasrp --remote solarisbox /path/on/solaris/to/trace.trc report.html
+
+</pre>
+OraSRP will connect to solarisbox and with help of proxysrp.pl will read trace.trc directly via TCP socket.
+
+</div>
+
+<a name=examples><div class=sectionTitle>Examples</div></a>
+<div class=ordinarytext>
+<li>Analyze trace1.trc file and generate report report1.html<br>
+<pre>
+$ orasrp trace1.trc report1.html
+
+</pre>
+
+<li>Analyze trace2.trc file and generate report report2.html without sys statements in it<br>
+<pre>
+$ orasrp --sys=no trace2.trc report2.html
+
+</pre>
+
+<li>Analyze ora_1234.trc trace file. Display only statements section. For every statement display 2 
+distinct bind-sets in maximum. Sort statements by total CPU time spent. Omit statements with CPU 
+time spent value less than 5% of total session CPU time spent. Output results in text format into
+ora_1234.txt file:
+<pre>
+$ orasrp --disp=statements --binds=2 --sort=totcpu --thresh=5 -t ora_1234.trc ora_1234.txt
+
+</pre>
+
+<li>Analyze data from compressed trace3.trc.gz
+<pre>
+$ gzip -cd trace3.trc.gz | orasrp - report3.html
+
+</pre>
+
+<li>Analyze trace4.trc which is located on remotehost.
+<pre>
+remotehost$ perl proxysrp.pl
+localhost$ orasrp -r remotehost trace4.trc report4.html
+
+</pre>
+
+</div>
+
+<a name=diffs> <div class=sectionTitle>Differences from OraSRP v2.1 and below</div> </a>
+<div class=ordinarytext>
+In short (list not complete):
+<ul>
+<li>Written in <a href=http://www.digitalmars.com/d>D programming language</a>.
+<li>Works faster (about two times) and spends less memory.
+<li>Display events histograms.
+<li>Recognize idle 'SQL*Net message from client' events.
+<li>Display 'datafiles read statistics' and 'parallel execution statistics'.
+</ul>
+</div>
+
+<a name=contacts> <div class=sectionTitle>Contacts</div> </a>
+via <a href="mailto:egorst@gmail.com">e-mail</a>
+<br><br>
+<div class=copyright><center><a href="http://oracledba.ru/orasrp/">OraSRP</a> is written by Egor Starostin</center></div>
+</body>
+
+</html>
+
